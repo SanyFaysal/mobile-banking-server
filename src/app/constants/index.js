@@ -9,3 +9,11 @@ exports.userStatus = {
   blocked: "blocked",
   pending: "pending",
 };
+
+exports.transactionType = {
+  openingBonus: "openingBonus",
+  sendMoney: "sendMoney",
+  cashOut: "cashOut",
+  cashIn: "cashIn",
+  withdraw: "withdraw",
+};

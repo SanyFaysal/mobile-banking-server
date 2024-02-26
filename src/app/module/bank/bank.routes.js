@@ -1,8 +1,9 @@
 const express = require("express");
-const { sendMoney } = require("./user.controller");
+
 const { verifyToken } = require("../../middleware/verifyToken");
+const { investMoney } = require("./bank.controller");
 const router = express.Router();
 
-router.post("/send-money", verifyToken, sendMoney);
+router.post("/invest", investMoney);
 
 module.exports = router;

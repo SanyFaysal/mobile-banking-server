@@ -25,6 +25,11 @@ const authSchema = mongoose.Schema(
         "Please provide a valid phone number",
       ],
     },
+    nid: {
+      type: String,
+      required:true,
+      unique: true,
+    },
 
     accountType: {
       type: String,
