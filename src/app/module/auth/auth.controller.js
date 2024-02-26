@@ -45,7 +45,7 @@ exports.findUserByEmail = async (req, res) => {
     if (!user) {
       return res.status(401).json({
         status: "failed",
-        error: "No result found with this email",
+        error: "No result found with this Email / Mobile Number",
       });
     }
 

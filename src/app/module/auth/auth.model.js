@@ -60,6 +60,10 @@ const authSchema = mongoose.Schema(
       type: ObjectId,
       ref: "Admin",
     },
+    createdAt: {
+      type: Date,
+      default: Date.now(),
+    },
   },
   {
     timeStamps: true,
@@ -73,6 +77,10 @@ authSchema.pre("save", function (next) {
   next();
 });
 
+authSchema.methods.comparePassword = function (password, hash) {
+  const isValidPassword = bcrypt.compareSync(password, hash);
+  return isValidPassword;
+};
 const Auth = mongoose.model("Auth", authSchema);
 
 module.exports = Auth;
