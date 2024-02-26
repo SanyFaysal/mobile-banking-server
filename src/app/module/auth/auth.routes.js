@@ -1,7 +1,9 @@
+const { findUserByEmail, signup } = require("./auth.controller");
+
 const express = require("express");
 const router = express.Router();
 
-router.post("/register", userController.signup);
-router.post("/login", userController.findUserByEmail);
+router.post("/register", signup);
+router.post("/login", findUserByEmail);
 
-export const authRoutes = router;
+module.exports = router;

@@ -1,10 +1,10 @@
-export const userRole = {
+exports.userRole = {
   user: "user",
   agent: "agent",
   admin: "agent",
 };
 
-export const userStatus = {
+exports.userStatus = {
   active: "active",
   blocked: "blocked",
   pending: "pending",

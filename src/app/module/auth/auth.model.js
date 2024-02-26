@@ -66,9 +66,13 @@ const authSchema = mongoose.Schema(
   }
 );
 
-userSchema.pre("save", function (next) {
+authSchema.pre("save", function (next) {
   const password = this.password;
   const hash = bcrypt.hashSync(password);
   this.password = hash;
   next();
 });
+
+const Auth = mongoose.model("Auth", authSchema);
+
+module.exports = Auth;
