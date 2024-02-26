@@ -1,7 +1,8 @@
 const { default: mongoose } = require("mongoose");
 const { transactionType } = require("../../constants");
 const { ObjectId } = mongoose.Schema.Types;
-const userSchema = mongoose.Schema({
+
+const transactionSchema = mongoose.Schema({
   auth: {
     type: ObjectId,
     ref: "Auth",
@@ -25,6 +26,7 @@ const userSchema = mongoose.Schema({
         transactionType.cashOut,
         transactionType.sendMoney,
         transactionType.withdraw,
+        transactionType.openingBonus,
       ],
       message: "{VALUE} can't be a transaction type",
     },
@@ -35,6 +37,6 @@ const userSchema = mongoose.Schema({
   },
 });
 
-const User = mongoose.model("User", userSchema);
+const Transaction = mongoose.model("Transaction", transactionSchema);
 
-module.exports = User;
+module.exports = Transaction;

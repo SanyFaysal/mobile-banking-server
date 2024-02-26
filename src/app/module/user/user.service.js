@@ -1,12 +1,15 @@
 const User = require("./user.model");
 
 exports.increaseUserBalance = async (id, amount) => {
-  const result = await User.balance({ _id: id }, { $inc: { balance: amount } });
+  const result = await User.updateOne(
+    { _id: id },
+    { $inc: { balance: amount } }
+  );
   return result;
 };
 
 exports.decreaseUserBalance = async (id, amount) => {
-  const result = await User.balance(
+  const result = await User.updateOne(
     { _id: id },
     { $inc: { balance: -amount } }
   );

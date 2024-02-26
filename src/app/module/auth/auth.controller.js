@@ -41,7 +41,7 @@ exports.findUserByEmail = async (req, res) => {
     }
 
     const user = await findUserByEmailService(emailOrMobileNumber);
-
+    console.log({ user });
     if (!user) {
       return res.status(401).json({
         status: "failed",
