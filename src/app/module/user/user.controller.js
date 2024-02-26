@@ -1,16 +1,7 @@
-const { default: mongoose } = require("mongoose");
-const { transactionType } = require("../../constants");
-const { increaseAdminIncome } = require("../admin/admin.service");
+const { userStatus, userRole } = require("../../constants");
 const { findUserByEmailService } = require("../auth/auth.service");
-const { increaseBankBalance } = require("../bank/bank.service");
-const {
-  createTransactionService,
-} = require("../transaction/transaction.service");
-const {
-  increaseUserBalance,
-  decreaseUserBalance,
-  sendMoneyService,
-} = require("./user.service");
+
+const { sendMoneyService, cashOutService } = require("./user.service");
 
 exports.sendMoney = async (req, res) => {
   try {
@@ -48,6 +39,59 @@ exports.sendMoney = async (req, res) => {
     });
   } catch (error) {
     res.status(400).json({
+      status: "failed",
+      error: error.message,
+    });
+  }
+};
+
+exports.cashOut = async (req, res) => {
+  try {
+    const userAccount = req.user;
+    const { agentNumber, amount, password } = req.body;
+
+    if (amount < 50) {
+      return res.status(401).json({
+        status: "failed",
+        error: "Minimum Cash out  limit 50 tk!",
+      });
+    }
+
+    if (userAccount?.user?.balance < amount) {
+      return res.status(401).json({
+        status: "failed",
+        error: "Insufficient balance !",
+      });
+    }
+    const agentAccount = await findUserByEmailService(agentNumber);
+
+    if (
+      !agentAccount ||
+      agentAccount?.accountType !== userRole.agent ||
+      agentAccount?.status === userStatus.pending
+    ) {
+      return res.status(401).json({
+        status: "failed",
+        error: "Invalid Agent Number !",
+      });
+    }
+    const isPasswordCorrect = userAccount.comparePassword(
+      password,
+      userAccount?.password
+    );
+    if (!isPasswordCorrect) {
+      return res.status(401).json({
+        status: "failed",
+        error: "Invalid password !",
+      });
+    }
+    await cashOutService(amount, userAccount, agentAccount);
+    return res.status(200).json({
+      status: "Success",
+      message: "Cash out successful",
+    });
+  } catch (error) {
+    return res.status(400).json({
       status: "failed",
       error: error.message,
     });

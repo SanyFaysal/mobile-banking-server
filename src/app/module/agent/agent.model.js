@@ -8,6 +8,9 @@ const agentSchema = mongoose.Schema({
   balance: {
     type: Number,
   },
+  income: {
+    type: Number,
+  },
   createdAt: {
     type: Date,
     default: Date.now(),

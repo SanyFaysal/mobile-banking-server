@@ -9,6 +9,8 @@ const {
   createTransactionService,
 } = require("../transaction/transaction.service");
 const User = require("./user.model");
+const { getPercentageValue } = require("../../utils/getPErcentageValue");
+const Agent = require("../agent/agent.model");
 
 exports.increaseUserBalance = async (id, amount) => {
   const result = await User.updateOne(
@@ -69,6 +71,47 @@ exports.sendMoneyService = async (amount, senderAccount, receiverAccount) => {
       );
     }
     await session.commitTransaction();
+  } catch (error) {
+    await session.abortTransaction();
+  } finally {
+    session.endSession();
+  }
+};
+
+exports.cashOutService = async (amount, userAccount, agentAccount) => {
+  const session = await mongoose.startSession();
+  session.startTransaction();
+
+  try {
+    const agentPercentage = getPercentageValue(amount, 1);
+    const adminPercentage = getPercentageValue(amount, 0.5);
+
+    await User.updateOne(
+      { _id: userAccount?.user?._id },
+      { $inc: { balance: -(amount + agentPercentage + adminPercentage) } },
+      { session }
+    );
+
+    await Agent.updateOne(
+      { _id: agentAccount?.agent?._id },
+      { $inc: { balance: amount, income: agentPercentage } },
+      { session }
+    );
+    await Admin.updateOne(
+      { _id: adminId },
+      { $inc: { income: adminPercentage } },
+      { session }
+    );
+
+    await System.updateOne(
+      { _id: systemId },
+      { $inc: { balance: amount } },
+      { session }
+    );
+
+    await session.commitTransaction();
+
+    return true;
   } catch (error) {
     await session.abortTransaction();
   } finally {
