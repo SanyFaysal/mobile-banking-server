@@ -17,3 +17,6 @@ exports.transactionType = {
   cashIn: "cashIn",
   withdraw: "withdraw",
 };
+
+(exports.adminId = "65dcd92dbaadeb50e0915ece"),
+  (exports.systemId = "65dcd79d37ce42c270a9b418");

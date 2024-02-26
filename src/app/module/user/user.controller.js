@@ -1,3 +1,4 @@
+const { default: mongoose } = require("mongoose");
 const { transactionType } = require("../../constants");
 const { increaseAdminIncome } = require("../admin/admin.service");
 const { findUserByEmailService } = require("../auth/auth.service");
@@ -5,14 +6,19 @@ const { increaseBankBalance } = require("../bank/bank.service");
 const {
   createTransactionService,
 } = require("../transaction/transaction.service");
-const { increaseUserBalance, decreaseUserBalance } = require("./user.service");
+const {
+  increaseUserBalance,
+  decreaseUserBalance,
+  sendMoneyService,
+} = require("./user.service");
 
 exports.sendMoney = async (req, res) => {
   try {
     const senderAccount = req.user;
     const { mobileNumber, amount } = req.body;
+
     const receiverAccount = await findUserByEmailService(mobileNumber);
-    console.log({ receiverAccount });
+
     if (senderAccount?.mobileNumber === receiverAccount?.mobileNumber) {
       return res.status(401).json({
         status: "failed",
@@ -34,29 +40,8 @@ exports.sendMoney = async (req, res) => {
       });
     }
 
-    await decreaseUserBalance(
-      senderAccount?.user?._id,
-      amount > 100 ? amount + 5 : amount
-    );
-    const senderTransactionData = {
-      auth: senderAccount?._id,
-      amount: amount,
-      transactionType: transactionType.sendMoney,
-    };
-    await createTransactionService(senderTransactionData);
+    await sendMoneyService(amount, senderAccount, receiverAccount);
 
-    await increaseUserBalance(receiverAccount?.user?._id, amount);
-    const receiverTransactionData = {
-      auth: receiverAccount?._id,
-      amount: amount,
-      transactionType: transactionType.cashIn,
-    };
-    await createTransactionService(receiverTransactionData);
-
-    if (amount > 100) {
-      await increaseBankBalance(5);
-      await increaseAdminIncome(5);
-    }
     return res.status(200).json({
       status: "Success",
       error: "Send Money Successful !",
