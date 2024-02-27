@@ -1,7 +1,7 @@
 exports.userRole = {
   user: "user",
   agent: "agent",
-  admin: "agent",
+  admin: "admin",
 };
 
 exports.userStatus = {
