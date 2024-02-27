@@ -10,6 +10,7 @@ const agentSchema = mongoose.Schema({
   },
   income: {
     type: Number,
+    default: 0,
   },
   createdAt: {
     type: Date,
