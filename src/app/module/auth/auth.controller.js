@@ -77,7 +77,29 @@ exports.findUserByEmail = async (req, res) => {
     });
   }
 };
+exports.getMe = async (req, res) => {
+  try {
+    const { email } = req.user;
+    const result = await findUserByEmailService(email);
+    if (!result) {
+      return res.status(400).json({
+        status: "failed",
+        error: "Token is not verified",
+      });
+    }
 
+    res.status(200).json({
+      status: "Success",
+      message: "successfully get data",
+      data: result,
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: "failed",
+      error: error.message,
+    });
+  }
+};
 exports.getAll = async (req, res) => {
   try {
     const { role } = req.params;
