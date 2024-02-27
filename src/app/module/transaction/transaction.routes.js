@@ -1,9 +1,15 @@
 const express = require("express");
 
-const { getUserTransactions } = require("./transaction.controller");
+const {
+  getUserTransactions,
+  getAllUserTransactions,
+  getAllAgentsTransactions,
+} = require("./transaction.controller");
 
 const router = express.Router();
 
-router.get("/:userId", getUserTransactions);
+router.get("/users", getAllUserTransactions);
+router.get("/agents", getAllAgentsTransactions);
+router.get("/user/:userId", getUserTransactions);
 
 module.exports = router;

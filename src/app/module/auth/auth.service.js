@@ -27,21 +27,6 @@ exports.signupService = async (data) => {
     await createTransactionService(transactionData);
   }
 
-  if (result && result?.accountType === userRole.agent) {
-    const agentData = {
-      auth: result?._id,
-      balance: 100000,
-    };
-    const res = await Agent.create(agentData);
-    await Auth.updateOne({ _id: result?._id }, { agent: res?._id });
-    const transactionData = {
-      auth: result?._id,
-      amount: 100000,
-      transactionType: transactionType.openingBonus,
-    };
-    await createTransactionService(transactionData);
-  }
-
   return result;
 };
 exports.findUserByEmailService = async (email) => {
