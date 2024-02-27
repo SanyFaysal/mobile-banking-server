@@ -40,6 +40,7 @@ exports.sendMoneyService = async (amount, senderAccount, receiverAccount) => {
     const senderTransactionData = {
       auth: senderAccount?._id,
       amount: amount,
+      receiver: receiverAccount?.user?._id,
       transactionType: transactionType.sendMoney,
     };
 
@@ -54,6 +55,7 @@ exports.sendMoneyService = async (amount, senderAccount, receiverAccount) => {
     const receiverTransactionData = {
       auth: receiverAccount?._id,
       amount: amount,
+      sender: senderAccount?._id,
       transactionType: transactionType.cashIn,
     };
     await Transaction.create([receiverTransactionData], { session });
@@ -108,6 +110,15 @@ exports.cashOutService = async (amount, userAccount, agentAccount) => {
       { $inc: { balance: amount } },
       { session }
     );
+
+    const transactionData = {
+      auth: userAccount?.user?._id,
+      amount: amount,
+      receiver: agentAccount?.agent?._id,
+      transactionType: transactionType.cashOut,
+    };
+
+    await Transaction.create([transactionData], { session });
 
     await session.commitTransaction();
 

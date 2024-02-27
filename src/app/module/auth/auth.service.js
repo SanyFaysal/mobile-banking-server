@@ -50,3 +50,17 @@ exports.findUserByEmailService = async (email) => {
   }).populate("user agent admin");
   return result;
 };
+
+exports.getAllService = async (role, searchTerm) => {
+  const result = await Auth.find({
+    accountType: role,
+    $or: [
+      { fullName: { $regex: searchTerm, $options: "i" } },
+      { email: { $regex: searchTerm, $options: "i" } },
+      { mobileNumber: { $regex: searchTerm, $options: "i" } },
+      { nid: { $regex: searchTerm, $options: "i" } },
+      { status: { $regex: searchTerm, $options: "i" } },
+    ],
+  }).populate(role);
+  return result;
+};
