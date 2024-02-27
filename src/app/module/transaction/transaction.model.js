@@ -27,6 +27,7 @@ const transactionSchema = mongoose.Schema({
         transactionType.sendMoney,
         transactionType.withdraw,
         transactionType.openingBonus,
+        transactionType.userCashIn,
       ],
       message: "{VALUE} can't be a transaction type",
     },

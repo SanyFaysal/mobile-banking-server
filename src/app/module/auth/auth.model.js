@@ -27,7 +27,7 @@ const authSchema = mongoose.Schema(
     },
     nid: {
       type: String,
-      required:true,
+      required: true,
       unique: true,
     },
 
@@ -42,7 +42,12 @@ const authSchema = mongoose.Schema(
       type: String,
       default: userStatus.active,
       enum: {
-        values: [userStatus.active, userStatus.blocked, userStatus.pending],
+        values: [
+          userStatus.active,
+          userStatus.blocked,
+          userStatus.pending,
+          userStatus.reject,
+        ],
         message: "{VALUE} can't be an status",
       },
     },

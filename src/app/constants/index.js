@@ -8,6 +8,7 @@ exports.userStatus = {
   active: "active",
   blocked: "blocked",
   pending: "pending",
+  reject: "reject",
 };
 
 exports.transactionType = {
@@ -16,6 +17,7 @@ exports.transactionType = {
   cashOut: "cashOut",
   cashIn: "cashIn",
   withdraw: "withdraw",
+  userCashIn: "userCashIn",
 };
 
 (exports.adminId = "65dcd92dbaadeb50e0915ece"),
