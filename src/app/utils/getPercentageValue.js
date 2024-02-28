@@ -1,3 +1,4 @@
-exports.getPercentageValue = (amount, percent) => {
+function getPercentageValue(amount, percent) {
   return (amount * percent) / 100;
-};
+}
+module.exports = getPercentageValue;

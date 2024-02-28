@@ -9,8 +9,9 @@ const {
   createTransactionService,
 } = require("../transaction/transaction.service");
 const User = require("./user.model");
-const { getPercentageValue } = require("../../utils/getPErcentageValue");
+
 const Agent = require("../agent/agent.model");
+const getPercentageValue = require("../../utils/getPErcentageValue");
 
 exports.increaseUserBalance = async (id, amount) => {
   const result = await User.updateOne(

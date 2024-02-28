@@ -13,6 +13,10 @@ const withdrawRoutes = require("./app/module/withdraw/withdraw.routes.js");
 app.use(express.json());
 app.use(cors());
 
+app.get("/", (req, res) => {
+  res.send("Route is working! YaY!");
+});
+
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/user", userRoutes);
 app.use("/api/v1/bank", bankRoutes);
