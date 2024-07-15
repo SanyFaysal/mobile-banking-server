@@ -11,7 +11,7 @@ const cashRequestRoutes = require("./app/module/cashRequest/cashRequest.routes.j
 const withdrawRoutes = require("./app/module/withdraw/withdraw.routes.js");
 
 app.use(express.json());
-app.use(cors({origin: ["'https://mobile-banking-server.vercel.app"]}));
+app.use(cors({origin: ["https://mobile-banking-server.vercel.app"]}));
 
 app.get("/", (req, res) => {
   res.send("Route is working! YaY!");
